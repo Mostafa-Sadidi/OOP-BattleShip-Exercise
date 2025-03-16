@@ -72,9 +72,6 @@ public class Game {
                 ship.placeShipByUser(secondPlayer.getboard().getGrid(), size);
             }
 
-            firstPlayer.getboard().printGrid(firstPlayer.getboard().getGrid(), size);
-            secondPlayer.getboard().printGrid(secondPlayer.getboard().getGrid(), size);
-
             boolean player1Turn = true;
             while (!isGameOver()) {
                 if (player1Turn) {
@@ -83,12 +80,10 @@ public class Game {
                         System.out.println("Special attack time!!");
                         System.out.println("Now you can choose 3 targets one by one");
                         specialAttackUser(secondPlayer, firstPlayer);
-                        System.out.println("Player1's hit = " + player1Hit);
                     }
                     else {
                         firstPlayer.getTrackingBoard().printGrid(firstPlayer.getTrackingBoard().getGrid(), size);
                         playerTurn(secondPlayer.getboard().getGrid(), firstPlayer.getTrackingBoard().getGrid(), firstPlayer);
-                        System.out.println("Player1's hit = " + player1Hit);
                     }
                 } else {
                     System.out.println(secondPlayerName + "'s turn:");
@@ -96,12 +91,10 @@ public class Game {
                         System.out.println("Special attack time!!");
                         System.out.println("Now you can choose 3 targets one by one");
                         specialAttackUser(firstPlayer, secondPlayer);
-                        System.out.println("Player2's hit = " + player2Hit);
                     }
                     else {
                         secondPlayer.getTrackingBoard().printGrid(secondPlayer.getTrackingBoard().getGrid(),  size);
                         playerTurn(firstPlayer.getboard().getGrid(), secondPlayer.getTrackingBoard().getGrid(), secondPlayer);
-                        System.out.println("Player2's hit = " + player2Hit);
                     }
                 }
                 player1Turn = !player1Turn;
@@ -129,9 +122,6 @@ public class Game {
             aiPlayer = new AIPlayer(secondPlayerName, size);
             ship.placeShipsRandom(aiPlayer.getboard().getGrid(), size);
 
-            firstPlayer.getboard().printGrid(firstPlayer.getboard().getGrid(), size);
-            aiPlayer.getboard().printGrid(aiPlayer.getboard().getGrid(), size);
-
             boolean player1Turn = true;
             while (!isGameOver()) {
                 if (player1Turn) {
@@ -140,12 +130,10 @@ public class Game {
                         System.out.println("Special attack time!!");
                         System.out.println("Now you can choose 3 targets one by one");
                         specialAttackUser(aiPlayer, firstPlayer);
-                        System.out.println("Player1's hit = " + player1Hit);
                     }
                     else {
                         firstPlayer.getTrackingBoard().printGrid(firstPlayer.getTrackingBoard().getGrid(), size);
                         playerTurn(aiPlayer.getboard().getGrid(), firstPlayer.getTrackingBoard().getGrid(), firstPlayer);
-                        System.out.println("Player1's hit = " + player1Hit);
                     }
                 }
                 else {
@@ -154,12 +142,10 @@ public class Game {
                         System.out.println("Special attack time!!");
                         System.out.println("Now you can choose 3 targets one by one");
                         specialAttackAI(firstPlayer, aiPlayer);
-                        System.out.println("AI's hit = " + aiHit);
                     }
                     else {
                         aiPlayer.getTrackingBoard().printGrid(aiPlayer.getTrackingBoard().getGrid(),  size);
                         AITurn(firstPlayer.getboard().getGrid(), aiPlayer.getTrackingBoard().getGrid(), aiPlayer);
-                        System.out.println("AI's hit = " + aiHit);
                     }
                 }
                 player1Turn = !player1Turn;
