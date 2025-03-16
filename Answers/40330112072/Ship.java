@@ -36,6 +36,7 @@ public class Ship {
      */
 
     public void placeShipByUser (char[][] grid, int size) {
+        Board board = new Board(size);
         for(int i = 2; i <= 5 ; i++){
             Scanner strScanner = new Scanner(System.in);
             Scanner inputScanner = new Scanner(System.in);
@@ -43,7 +44,6 @@ public class Ship {
             while(!isPlaced){
                 String orientation;
                 int row , col;
-                Board board = new Board(size);
                 board.printGrid(grid, size);
                 System.out.print("Enter coordinates for ship with size of " + i + " (for example A1): ");
                 String input = strScanner.nextLine();
@@ -84,5 +84,6 @@ public class Ship {
                 }
             }
         }
+        board.printGrid(grid, size);
     }
 }

@@ -5,7 +5,7 @@ public class Game {
     AIPlayer aiPlayer;
     Player firstPlayer;
     Player secondPlayer;
-    int size, mode;
+    int size, mode, player1Hit = 0, player2Hit = 0, aiHit = 0;
     boolean randomized;
 
     /**
@@ -41,15 +41,15 @@ public class Game {
         if (mode == 1 || mode == 2) {
             String shipPlacement;
             do {
-                System.out.print("Ship placement(randomized or manual): ");
+                System.out.print("Ship placement(random or manual): ");
                 shipPlacement = input.nextLine();
-                if (!shipPlacement.equalsIgnoreCase("randomized") &&
+                if (!shipPlacement.equalsIgnoreCase("random") &&
                         !shipPlacement.equalsIgnoreCase("manual")) {
                     System.out.println("Invalid ship placement value. Please try again.");
                 }
-            } while (!shipPlacement.equalsIgnoreCase("randomized") &&
+            } while (!shipPlacement.equalsIgnoreCase("random") &&
                     !shipPlacement.equalsIgnoreCase("manual"));
-            randomized = shipPlacement.equalsIgnoreCase("randomized");
+            randomized = shipPlacement.equalsIgnoreCase("random");
         }
         if (mode == 1) {
             size = utils.getGridSize();
@@ -79,12 +79,30 @@ public class Game {
             while (!isGameOver()) {
                 if (player1Turn) {
                     System.out.println(firstPlayerName + "'s turn:");
-                    firstPlayer.getTrackingBoard().printGrid(firstPlayer.getTrackingBoard().getGrid(), size);
-                    playerTurn(secondPlayer.getboard().getGrid(), firstPlayer.getTrackingBoard().getGrid(), firstPlayer);
+                    if (player1Hit == 2){
+                        System.out.println("Special attack time!!");
+                        System.out.println("Now you can choose 3 targets one by one");
+                        specialAttackUser(secondPlayer, firstPlayer);
+                        System.out.println("Player1's hit = " + player1Hit);
+                    }
+                    else {
+                        firstPlayer.getTrackingBoard().printGrid(firstPlayer.getTrackingBoard().getGrid(), size);
+                        playerTurn(secondPlayer.getboard().getGrid(), firstPlayer.getTrackingBoard().getGrid(), firstPlayer);
+                        System.out.println("Player1's hit = " + player1Hit);
+                    }
                 } else {
                     System.out.println(secondPlayerName + "'s turn:");
-                    secondPlayer.getTrackingBoard().printGrid(secondPlayer.getTrackingBoard().getGrid(),  size);
-                    playerTurn(firstPlayer.getboard().getGrid(), secondPlayer.getTrackingBoard().getGrid(), secondPlayer);
+                    if (player2Hit == 2){
+                        System.out.println("Special attack time!!");
+                        System.out.println("Now you can choose 3 targets one by one");
+                        specialAttackUser(firstPlayer, secondPlayer);
+                        System.out.println("Player2's hit = " + player2Hit);
+                    }
+                    else {
+                        secondPlayer.getTrackingBoard().printGrid(secondPlayer.getTrackingBoard().getGrid(),  size);
+                        playerTurn(firstPlayer.getboard().getGrid(), secondPlayer.getTrackingBoard().getGrid(), secondPlayer);
+                        System.out.println("Player2's hit = " + player2Hit);
+                    }
                 }
                 player1Turn = !player1Turn;
             }
@@ -118,12 +136,31 @@ public class Game {
             while (!isGameOver()) {
                 if (player1Turn) {
                     System.out.println(firstPlayerName + "'s turn:");
-                    firstPlayer.getTrackingBoard().printGrid(firstPlayer.getTrackingBoard().getGrid(), size);
-                    playerTurn(aiPlayer.getboard().getGrid(), firstPlayer.getTrackingBoard().getGrid(), firstPlayer);
-                } else {
+                    if (player1Hit == 2){
+                        System.out.println("Special attack time!!");
+                        System.out.println("Now you can choose 3 targets one by one");
+                        specialAttackUser(aiPlayer, firstPlayer);
+                        System.out.println("Player1's hit = " + player1Hit);
+                    }
+                    else {
+                        firstPlayer.getTrackingBoard().printGrid(firstPlayer.getTrackingBoard().getGrid(), size);
+                        playerTurn(aiPlayer.getboard().getGrid(), firstPlayer.getTrackingBoard().getGrid(), firstPlayer);
+                        System.out.println("Player1's hit = " + player1Hit);
+                    }
+                }
+                else {
                     System.out.println(secondPlayerName + "'s turn:");
-                    aiPlayer.getTrackingBoard().printGrid(aiPlayer.getTrackingBoard().getGrid(),  size);
-                    AITurn(firstPlayer.getboard().getGrid(), aiPlayer.getTrackingBoard().getGrid(), aiPlayer);
+                    if (aiHit == 2){
+                        System.out.println("Special attack time!!");
+                        System.out.println("Now you can choose 3 targets one by one");
+                        specialAttackAI(firstPlayer, aiPlayer);
+                        System.out.println("AI's hit = " + aiHit);
+                    }
+                    else {
+                        aiPlayer.getTrackingBoard().printGrid(aiPlayer.getTrackingBoard().getGrid(),  size);
+                        AITurn(firstPlayer.getboard().getGrid(), aiPlayer.getTrackingBoard().getGrid(), aiPlayer);
+                        System.out.println("AI's hit = " + aiHit);
+                    }
                 }
                 player1Turn = !player1Turn;
             }
@@ -192,11 +229,23 @@ public class Game {
                 System.out.println("Hit!");
                 trackingGrid[row][col] = 'X';
                 player.getTrackingBoard().setGrid(trackingGrid);
+                if (player == firstPlayer) {
+                    player1Hit++;
+                }
+                else {
+                    player2Hit++;
+                }
             }
             else {
                 System.out.println("Miss!");
                 trackingGrid[row][col] = '0';
                 player.getTrackingBoard().setGrid(trackingGrid);
+                if (player == firstPlayer) {
+                    player1Hit = 0;
+                }
+                else {
+                    player2Hit = 0;
+                }
             }
         }
     }
@@ -220,13 +269,36 @@ public class Game {
                 System.out.println(target + " and " + "Hit!");
                 trackingGrid[row][col] = 'X';
                 player.getTrackingBoard().setGrid(trackingGrid);
+                aiHit++;
             }
             else {
                 System.out.println(target + " and " + "Miss!");
                 trackingGrid[row][col] = '0';
                 player.getTrackingBoard().setGrid(trackingGrid);
+                aiHit = 0;
             }
         }
+    }
+
+    private void specialAttackUser (Player opponent, Player player) {
+        for (int i = 0; i < 3; i++) {
+            player.getTrackingBoard().printGrid(player.getTrackingBoard().getGrid(), size);
+            playerTurn(opponent.getboard().getGrid(), player.getTrackingBoard().getGrid(), player);
+        }
+        if (player == firstPlayer) {
+            player1Hit = 0;
+        }
+        else {
+            player2Hit = 0;
+        }
+    }
+
+    private void specialAttackAI (Player opponent, Player player) {
+        for (int i = 0; i < 3; i++) {
+            player.getTrackingBoard().printGrid(player.getTrackingBoard().getGrid(), size);
+            AITurn(opponent.getboard().getGrid(), player.getTrackingBoard().getGrid(), player);
+        }
+        aiHit = 0;
     }
 }
 
