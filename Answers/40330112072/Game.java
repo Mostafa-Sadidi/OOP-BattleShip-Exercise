@@ -280,6 +280,11 @@ public class Game {
         }
     }
 
+    /**
+        When a player hits twice in a row, his/her next attack will be special.
+        That means he/she can attack 3 targets in a turn one by one.
+     */
+
     private void specialAttackUser (Player opponent, Player player) {
         for (int i = 0; i < 3; i++) {
             player.getTrackingBoard().printGrid(player.getTrackingBoard().getGrid(), size);
@@ -292,6 +297,11 @@ public class Game {
             player2Hit = 0;
         }
     }
+
+    /**
+        When AI hits twice in a row, its next attack will be special.
+        That means it can attack 3 targets in a turn one by one.
+     */
 
     private void specialAttackAI (Player opponent, Player player) {
         for (int i = 0; i < 3; i++) {

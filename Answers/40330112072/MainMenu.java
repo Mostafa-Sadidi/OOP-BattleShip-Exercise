@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class MainMenu {
     public void menu() {
         System.out.println("1. Player VS Player");
